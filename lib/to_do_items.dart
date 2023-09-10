@@ -87,28 +87,15 @@ class _ToDoItemState extends State<ToDoItem> {
               isChecked = newValue ?? false;
               widget.onUpdateTitle(widget.title, isChecked);
             });
+          if(isChecked == true) {
             showDialog(
               context: context,
-              builder: (context) => AlertDialog(
-                title: Text('Are you sure you want to continue?'),
-                actions: <Widget>[
-                  TextButton(
-                    child: Text('OK'),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
+              builder: (context) =>
+                  AlertDialog(
+                    title: Text('Task marked as completed!'),
                   ),
-                  TextButton(
-                    child: Text('Cancel'),
-                    onPressed: () {
-                      isChecked = false;
-                      widget.onUpdateTitle(widget.title, isChecked);
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                ],
-              ),
             );
+          }
           },
           activeColor: Colors.green,
         ),
@@ -165,7 +152,27 @@ class _ToDoItemState extends State<ToDoItem> {
                 color: Colors.red,
                 iconSize: 18,
                 icon: Icon(Icons.delete),
-                onPressed: widget.onDelete,
+                onPressed: () {
+                  showDialog(context: context, builder: (context) =>
+                      AlertDialog(
+                        title: Text('Are you sure you want to delete this task'),
+                        actions: <Widget>[
+                          TextButton(
+                            child: Text('Yes'),
+                            onPressed: () {
+                              widget.onDelete();
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                          TextButton(
+                            child: Text('No'),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                        ],
+                      ));
+                }
               ),
             ],
           ),
